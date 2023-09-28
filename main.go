@@ -15,9 +15,10 @@ import (
 )
 
 var (
-	key    = flag.String("key", "", "")
-	secret = flag.String("secret", "", "")
-	domain = flag.String("domain", "", "")
+	key      = flag.String("key", "", "")
+	secret   = flag.String("secret", "", "")
+	domain   = flag.String("domain", "", "")
+	interval = flag.String("interval", "10m", "")
 )
 
 func createClient(accessKeyId *string, accessKeySecret *string) (_result *alidns20150109.Client, _err error) {
@@ -53,15 +54,20 @@ func run(ctx context.Context) error {
 		return err
 	}
 
+	dur, err := time.ParseDuration(*interval)
+	if err != nil {
+		return err
+	}
+
 	records, err := client.DescribeDomainRecords(&alidns20150109.DescribeDomainRecordsRequest{
 		DomainName: domain,
 	})
 	if err != nil {
 		return err
 	}
-	preIp := ""
+	preIP := ""
 	if len(records.Body.DomainRecords.Record) > 0 {
-		preIp = *records.Body.DomainRecords.Record[0].Value
+		preIP = *records.Body.DomainRecords.Record[0].Value
 	}
 
 	for {
@@ -71,7 +77,8 @@ func run(ctx context.Context) error {
 			goto SLEEP
 		}
 
-		if ip != preIp {
+		if ip != preIP {
+			log.Printf("ip changed old(%s) new(%s) try to change dns", preIP, ip)
 			_, err = client.AddDomainRecord(&alidns20150109.AddDomainRecordRequest{
 				DomainName:   domain,
 				Lang:         tea.String("en"),
@@ -84,12 +91,13 @@ func run(ctx context.Context) error {
 				log.Println("request error", err)
 				goto SLEEP
 			}
-			preIp = ip
+			preIP = ip
+			log.Println("dns updated successfully")
 			goto SLEEP
 		}
 
 	SLEEP:
-		time.Sleep(time.Second * 10)
+		time.Sleep(dur)
 	}
 }
 
