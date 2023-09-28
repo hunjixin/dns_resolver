@@ -1,4 +1,4 @@
-module github.com/hunjixin/ty_dns_resolver
+module github.com/hunjixin/dns_resolver
 
 go 1.19
 
@@ -6,7 +6,7 @@ require (
 	github.com/alibabacloud-go/alidns-20150109/v4 v4.0.1
 	github.com/alibabacloud-go/darabonba-openapi/v2 v2.0.4
 	github.com/alibabacloud-go/tea v1.1.20
-	github.com/alibabacloud-go/tea-utils/v2 v2.0.1
+	h12.io/html-query v0.0.0-20180505161840-775479db558c
 )
 
 require (
@@ -15,6 +15,7 @@ require (
 	github.com/alibabacloud-go/endpoint-util v1.1.0 // indirect
 	github.com/alibabacloud-go/openapi-util v0.1.0 // indirect
 	github.com/alibabacloud-go/tea-utils v1.3.1 // indirect
+	github.com/alibabacloud-go/tea-utils/v2 v2.0.1 // indirect
 	github.com/alibabacloud-go/tea-xml v1.1.2 // indirect
 	github.com/aliyun/credentials-go v1.1.2 // indirect
 	github.com/clbanning/mxj/v2 v2.5.5 // indirect
