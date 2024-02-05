@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -34,5 +34,6 @@ jobs:
         timeout-minutes: 12
       - run: |
           docker version
+          docker login -u  ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker build -t hunjixin/dnsupdate:latest .
           docker push hunjixin/dnsupdate:latest
