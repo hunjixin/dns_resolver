@@ -95,6 +95,7 @@ func run(ctx context.Context) error {
 	if len(records.Body.DomainRecords.Record) > 0 {
 		preIP = *records.Body.DomainRecords.Record[0].Value
 		recordId = *records.Body.DomainRecords.Record[0].RecordId
+		fmt.Println("current ip", preIP)
 	}
 
 	for {
